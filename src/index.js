@@ -2,7 +2,8 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan')
 const path = require('path')
-const { mongoose } = require('./database')
+var port = process.env.PORT || 3900;
+var mongoose = require('mongoose');
 
 
 // Settings
@@ -21,6 +22,14 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 //Starting the server
 
-app.listen(app.get('port'), () => {
-    console.log(`Server on port ${app.get('port')}`)
-})
+mongoose.connect('mongodb+srv://AndreaAldana:Paralelepipedo_98@cluster0.ipklg.mongodb.net/MERNTasks? retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => {
+            console.log('La conexion a mongodb se realizo correctamente!');
+
+            //Crear servidor y ponerme a escuchar peticiones HTTP
+            app.listen(port, () => {
+                    console.log('Servidor corriendo en http://localhost:' + port);
+
+            });
+
+    });
